@@ -49,6 +49,7 @@
   <link rel = "stylesheet" type = "text/css" href = "./library/dist/bootstrap-theme.min.css">
   <link rel="stylesheet" type="text/css" href="library/dist/style.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="library/css/style.css" />
   <!--<link rel="stylesheet" type="text/css" href="library/css/style.css" />-->
   <link href="owl/owl.carousel.css" rel="stylesheet">
   <link href="owl/owl.theme.css" rel="stylesheet">
@@ -154,6 +155,8 @@
             </button>
             <a class="navbar-brand cellfish" href="http://cell.fish"><img src="./images/headerlogo.png" alt="CellFish">
             </a>
+            <div class="navbar-icon"><a href="https://cellfish.app.link/savemoney"><img style="width:30%;height:30%;margin-bottom: 2%;margin-left:15%" src="images/playstore_icon.png"></a></div>
+
           </div>
           <div id="navbar3" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -178,6 +181,17 @@
       </div>
       <div id="phone__trigger"></div>
       <!-- 1st Mobile Fold -->
+      <div class="playstore_pop_up">
+            
+          <!-- <p class="playstore_pop_up_p"> Download App On playstore</p>
+          <a href = "https://fishcoin.app.link/savemoney" style=""><img class="playstore_pop_up_img"id = "playstoreImage"  src = "images/playstore1.png" alt="Google playstore" style="width:120px;margin-left:50px;"></a> -->
+      </div>
+      <button ><i class="fa fa-remove close_icon" style="font-size:24px"></i></button>
+
+      <div class="playstore_icon">
+        <p class="playstore_pop_up_p"> Download The App</p>
+        <a href = "https://cellfish.app.link/savemoney"><img class="playstore_pop_up_img"id = "playstoreImage"  src = "images/playstore1.png" alt="Google playstore" style="width:150px;margin-left:40px;margin-top:75%"></a>
+      </div>
       <div class="_container _container__mobile-1">
         <div class="backstrech__wrapper">
           <div class="backstrech__image"></div>
@@ -1006,6 +1020,7 @@
 <script src="library/js/hammer-time.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="library/js/retina.min.js"></script>
 <script type="text/javascript" src="library/js/dense.js"></script>
+<script src="//cdn.jsdelivr.net/npm/mobile-detect@1.4.2/mobile-detect.min.js"></script>
 <script src="owl/owl.carousel.min.js"></script>
 
 
@@ -1014,6 +1029,15 @@
 <script type="text/javascript">
 
   $(document).ready(function() {
+    $('.navbar-icon').hide();
+    var md = new MobileDetect(window.navigator.userAgent);
+    if(md.mobile() !== null || md.phone() !== null){
+      $('.navbar-icon').show();
+    }
+    var setTimer;
+    var count = 0;
+    $('.playstore_pop_up').hide();
+     $('.playstore_icon').hide();
     var owl = $('#owl-demo');
     owl.owlCarousel({
       // Show next and prev button
@@ -1030,6 +1054,9 @@
   // listen to events...
   var currSlide=0;
   mc.on("swipeup", function(ev) {
+    if(count == 0){
+      setTimer = setTimeout(redirectfunc,1000);
+     }
     currSlide++; window.scroll(0,0);
     var f = document.getElementById('gifList');
     var g = document.getElementById('phoneTextList');
@@ -1044,8 +1071,20 @@
  if(currSlide>3){currSlide=0; window.scroll(0,findPos(document.getElementById('features'))); f.style.transform = "translateY(-0px)"; g.style.transform = "translateY(-0px)";}
 
 });
+$('.close_icon').click(function(){
+  $('.playstore_pop_up').hide();
+  $('.playstore_icon').hide();
+  $('.close_icon').hide();
+  $('.full-h').css('opacity','1');
+  eraseCookie('redirectCookie');
+  clearTimeout(setTimer);
+  count++;
+});
   mc.on("swipedown", function(ev) {
     currSlide--;
+    if(count == 0){
+    setTimer =   setTimeout(redirectfunc,1000);
+    }
     window.scroll(0,0);
     var f = document.getElementById('gifList');
     var g = document.getElementById('phoneTextList');
@@ -1060,6 +1099,49 @@
 });
 });
 
+function redirectfunc(){
+   $('.playstore_pop_up').show();
+   $('.playstore_icon').show();
+   $('.close_icon').show();
+   $('.full-h').css('opacity','0.3');
+   // $('.playstore_pop_up').css('opacity','0.9');
+   if (getCookies('redirectCookie') == undefined || getCookies('redirectCookie') == null) {
+     setCookies('redirectCookie','testcookie',7);
+     console.log("in redirect function");
+     count++;
+     clearTimeout(setTimers);
+   }
+ }
+ 
+ function setCookies(name,value,days){
+  var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    console.log("cookie name:  "+name);
+    document.cookie = name+ "=" + (value || "")  + expires + "; path=/";
+}
+
+function getCookies(name){
+  var nameEQ = name +"=";
+   var ca = document.cookie.split(';');
+   for(var i=0;i < ca.length;i++) {
+       var c = ca[i];
+       while (c.charAt(0)==' ') c = c.substring(1,c.length);
+       if (c.indexOf(nameEQ) == 0){
+        console.log("get cookie: "+c.substring(nameEQ.length,c.length));
+        return c.substring(nameEQ.length,c.length);
+      }
+   }
+   return null;
+}
+
+function eraseCookie(name) {   
+    document.cookie = name+'=; Max-Age=-99999999;';  
+}
+ 
 
 
 
