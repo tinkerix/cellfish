@@ -1045,17 +1045,15 @@
 
 
 <script type="text/javascript">
-  var count = 0;
-  var setTimer;
+
   $(document).ready(function() {
     $('.navbar-icon').hide();
     var md = new MobileDetect(window.navigator.userAgent);
     if(md.mobile() !== null || md.phone() !== null){
       $('.navbar-icon').show();
-      if(count == 0){
-        setTimer = setTimeout(redirectfunc,8000);
-       }
     }
+    var setTimer;
+    var count = 0;
     $('.playstore_pop_up').hide();
      $('.playstore_icon').hide();
     var owl = $('#owl-demo');
@@ -1129,7 +1127,7 @@ function redirectfunc(){
      setCookies('redirectCookie','testcookie',7);
      console.log("in redirect function");
      count++;
-     clearTimeout(setTimer);
+     clearTimeout(setTimers);
    }
  }
  
