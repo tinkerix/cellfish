@@ -1052,13 +1052,15 @@ var countAuto = 0;
   $(document).ready(function() {
     // console.log("url: "+ window.location);
     // console.log("url url: "+ url);
-    if(window.location.search === ""){
-      insertParam("red",6);
-    }
+    // if(window.location.search === ""){
+    //   insertParam("red",6);
+    // }
     var url_string = window.location;
     var url = new URL(url_string);
     if(window.location.search != ""){
       timeToRedirect = url.searchParams.get("red");
+    }else{
+      timeToRedirect = 6;
     }
     
      // window.location.href = "https://cellfish.app.link/savemoney";
