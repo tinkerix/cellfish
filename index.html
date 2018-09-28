@@ -1045,10 +1045,24 @@
 
 
 <script type="text/javascript">
-var setTimer;
+var setTimer,setAutoRedirectTimer;
 var count = 0;
+var timeToRedirect;
+var countAuto = 0;
   $(document).ready(function() {
-  
+    // console.log("url: "+ window.location);
+    // console.log("url url: "+ url);
+    if(window.location.search === ""){
+      insertParam("red",6);
+    }
+    var url_string = window.location;
+    var url = new URL(url_string);
+    if(window.location.search != ""){
+      timeToRedirect = url.searchParams.get("red");
+    }
+    
+     // window.location.href = "https://cellfish.app.link/savemoney";
+    console.log("search: "+window.location.search);
     $('.navbar-icon').hide();
     var md = new MobileDetect(window.navigator.userAgent);
     if(md.mobile() !== null || md.phone() !== null){
@@ -1074,9 +1088,13 @@ var count = 0;
   // listen to events...
   var currSlide=0;
   mc.on("swipeup", function(ev) {
-    if(count == 0){
-      setTimer = setTimeout(redirectfunc,1000);
-     }
+    // if(count == 0){
+    //   setTimer = setTimeout(redirectfunc,1000);
+    //  }
+    if(countAuto == 0){
+      setAutoRedirectTimer = setTimeout(autoredirect,parseInt(timeToRedirect)*1000);
+    }
+    // setAutoRedirectTimer = setTimeout(autoredirect,6000);
     currSlide++; window.scroll(0,0);
     var f = document.getElementById('gifList');
     var g = document.getElementById('phoneTextList');
@@ -1102,9 +1120,9 @@ $('.close_icon').click(function(){
 });
   mc.on("swipedown", function(ev) {
     currSlide--;
-    if(count == 0){
-    setTimer =   setTimeout(redirectfunc,1000);
-    }
+    // if(count == 0){
+    // setTimer =   setTimeout(redirectfunc,1000);
+    // }
     window.scroll(0,0);
     var f = document.getElementById('gifList');
     var g = document.getElementById('phoneTextList');
@@ -1119,6 +1137,12 @@ $('.close_icon').click(function(){
 });
 });
 
+function autoredirect(){
+  countAuto++;
+  window.location.href="https://cellfish.app.link/savemoney"
+  // clearTimeout(setTimer);
+}
+
 function redirectfunc(){
    $('.playstore_pop_up').show();
    $('.playstore_icon').show();
@@ -1132,7 +1156,7 @@ function redirectfunc(){
      clearTimeout(setTimer);
    }
  }
- 
+
  function setCookies(name,value,days){
   var expires = "";
     if (days) {
@@ -1162,7 +1186,29 @@ function eraseCookie(name) {
     document.cookie = name+'=; Max-Age=-99999999;';  
 }
  
+function insertParam(key, value)
+{
+    key = encodeURI(key); value = encodeURI(value);
 
+    var kvp = document.location.search.substr(1).split('&');
+
+    var i=kvp.length; var x; while(i--) 
+    {
+        x = kvp[i].split('=');
+
+        if (x[0]==key)
+        {
+            x[1] = value;
+            kvp[i] = x.join('=');
+            break;
+        }
+    }
+
+    if(i<0) {kvp[kvp.length] = [key,value].join('=');}
+
+    //this will reload the page, it's likely better to store this until finished
+    document.location.search = kvp.join('&'); 
+}
 
 
   if(window.matchMedia) {  document.write(unescape("%3Cscript src='library/js/enquire.min.js' type='text/javascript'%3E%3C/script%3E"));
