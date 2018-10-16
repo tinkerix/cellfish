@@ -146,7 +146,7 @@
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
     fbq('init', '2127155744268711');
-    fbq('track', 'PageView');
+  
   </script>
   <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=2127155744268711&ev=PageView&noscript=1"
@@ -1055,6 +1055,7 @@ var countAuto = 0;
     // if(window.location.search === ""){
     //   insertParam("red",6);
     // }
+    fbq('track', 'PageServed');
     var url_string = window.location;
     var url = new URL(url_string);
     if(window.location.search != ""){
@@ -1141,6 +1142,7 @@ $('.close_icon').click(function(){
 
 function autoredirect(){
   countAuto++;
+  fbq('track', 'PageLoad');
   window.location.href="https://cellfish.app.link/savemoney"
   // clearTimeout(setTimer);
 }
@@ -1229,7 +1231,7 @@ function insertParam(key, value)
   button.addEventListener(
     'click', 
     function() { 
-      fbq('track', 'InstallClicked');          
+      fbq('track', 'PageView');          
     },
     false
   );
@@ -1237,7 +1239,7 @@ function insertParam(key, value)
   button1.addEventListener(
     'click', 
     function() { 
-      fbq('track', 'InstallClicked');          
+      fbq('track', 'PageView');          
     },
     false
   );
