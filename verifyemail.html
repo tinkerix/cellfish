@@ -23,26 +23,43 @@
 			var incomingUrl = window.location.href;
 			tokens = incomingUrl.split('?');
 			if (tokens.length != 2) {
-				$("body").text("CellYogi Email Verification Failed! Invalid Url Supplied");
+				$("body").text("Email Verification Failed! Invalid Url Supplied");
 				return;
 			}
 			params = tokens[1].split('&');
-			if (params.length != 2) {
-				$("body").text("CellYogi Email Verification Failed! Invalid Url Supplied");
+			if (params.length != 4) {
+				$("body").text("Email Verification Failed! Invalid Url Supplied");
 				return;
 			}
 			var emailstr = decodeURIComponent(params[0].substring(6));
 			var key = decodeURIComponent(params[1].substring(16));
-			
-			$.post("https://yogiapi.talkmoreapp.com/v1/user/verifyEmail", {email: emailstr, verificationkey: key}, function(result, status) {
+			var appName = decodeURIComponent(params[2].substring(8));
+			var isProd = decodeURIComponent(params[3].substring(7));
+			var link;
+			if(appName==="CellFish"){
+				if(isProd == true){
+					link = "https://api.cell.fish";
+				}else{
+					link = "https://int.cell.fish";
+				}
+			}else if (appName==="FishCoin"){
+				if(isProd == true){
+					link = "https://api.fishcoin.in";
+				}else{
+					link = "https://int.fishcoin.in";
+				}
+			}else{
+				$("body").text(appName+" Email Verification Failed! Invalid Url Supplied");
+				return;
+			}
+
+			$.post(link+"/v1/user/verifyEmail", {email: emailstr, verificationkey: key}, function(result, status) {
 			// $.post("http://localhost:8080/v1/user/verifyEmail", {email: emailstr, verificationkey: key}, function(result, status) {
 					// alert("Result: " + result + "\nStatus: " + status);
-					$("body").text("CellYogi Email Verification Successful!");
+					$("body").text(appName+" Email Verification Successful!");
 				}).fail(function() {
-					$("body").text("CellYogi Email Verification Failed!");
+					$("body").text(appName+" Email Verification Failed!");
 				});
-			
-
         });
         </script>
     </head>
